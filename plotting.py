@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def contour_potential(xrange, yrange, function, num_points=100, labels=True):
+def contour_potential(xrange, yrange, function, levels=10, num_points=100, labels=True):
     """
     Generates a contour plot for a given function over specified x and y ranges.
 
@@ -13,6 +13,8 @@ def contour_potential(xrange, yrange, function, num_points=100, labels=True):
         A tuple specifying the range of y values (ymin, ymax).
     function : callable
         A function that takes two arguments (x, y) and returns a z value.
+    levels : int, optional
+        The number of contour levels to plot (default is 10).
     num_points : int, optional
         The number of points to generate in each dimension (default is 100).
     labels : bool, optional
@@ -24,7 +26,7 @@ def contour_potential(xrange, yrange, function, num_points=100, labels=True):
         Meshgrid arrays for x, y, and the computed z values.
     """
     # Validate input
-    _validate_input_contour(xrange, yrange, function, num_points, labels)
+    _validate_input_contour(xrange, yrange, function, levels, num_points, labels)
 
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
@@ -35,7 +37,7 @@ def contour_potential(xrange, yrange, function, num_points=100, labels=True):
     res = function(X, Y)
 
     # Plot the contour
-    plt.contour(X, Y, res, colors='red', linestyles='dashed', linewidths=1)
+    plt.contour(X, Y, res, colors='red', linestyles='dashed', linewidths=1, levels=levels)
     if labels:
         # Create an invisible red line for the legend
         plt.plot(xrange[0], yrange[0], color='red', ls='dashed', lw=1, label='Equipotential Lines')
@@ -43,7 +45,7 @@ def contour_potential(xrange, yrange, function, num_points=100, labels=True):
     return None
 
 
-def contour_stream_func(xrange, yrange, function, num_points=100, labels=True):
+def contour_stream_func(xrange, yrange, function, levels=10, num_points=100, labels=True):
     """
     Generates a contour plot for a given function over specified x and y ranges.
 
@@ -55,6 +57,8 @@ def contour_stream_func(xrange, yrange, function, num_points=100, labels=True):
         A tuple specifying the range of y values (ymin, ymax).
     function : callable
         A function that takes two arguments (x, y) and returns a z value.
+    levels : int, optional
+        The number of contour levels to plot (default is 10).
     num_points : int, optional
         The number of points to generate in each dimension (default is 100).
     labels : bool, optional
@@ -66,7 +70,7 @@ def contour_stream_func(xrange, yrange, function, num_points=100, labels=True):
         Meshgrid arrays for x, y, and the computed z values.
     """
     # Validate input
-    _validate_input_contour(xrange, yrange, function, num_points, labels)
+    _validate_input_contour(xrange, yrange, function, levels, num_points, labels)
 
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
@@ -77,7 +81,7 @@ def contour_stream_func(xrange, yrange, function, num_points=100, labels=True):
     res = function(X, Y)
 
     # Plot the contour
-    plt.contour(X, Y, res, colors='blue', linestyles='solid', linewidths=1)
+    plt.contour(X, Y, res, colors='blue', linestyles='solid', linewidths=1, levels=levels)
     if labels:
         # Create an invisible red line for the legend
         plt.plot(xrange[0], yrange[0], color='blue', lw=1, label='Streamlines')
@@ -85,7 +89,7 @@ def contour_stream_func(xrange, yrange, function, num_points=100, labels=True):
     return None
 
 
-def _validate_input_contour(xrange, yrange, function, num_points, labels):
+def _validate_input_contour(xrange, yrange, function, levels, num_points, labels):
     """
     Validates the input parameters for contour plotting functions.
 
@@ -97,6 +101,12 @@ def _validate_input_contour(xrange, yrange, function, num_points, labels):
         A tuple specifying the range of y values (ymin, ymax).
     function : callable
         A function that takes two arguments (x, y) and returns a z value.
+    levels : int
+        The number of contour levels to plot.
+    num_points : int
+        The number of points to generate in each dimension.
+    labels : bool
+        Whether to label the contour lines.
 
     Raises
     ------
@@ -111,6 +121,10 @@ def _validate_input_contour(xrange, yrange, function, num_points, labels):
     # Check that labels is a boolean
     if not isinstance(labels, bool):
         raise ValueError("labels must be a boolean value.")
+
+    # Check that levels is a positive integer
+    if not isinstance(levels, int) or levels <= 0:
+        raise ValueError("levels must be a positive integer.")
 
     # Check that the ranges are tuples of length 2
     if not isinstance(xrange, tuple) or not isinstance(yrange, tuple):

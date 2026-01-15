@@ -1,18 +1,20 @@
 from plotting import contour_potential, contour_stream_func
 import matplotlib.pyplot as plt
+import numpy as np
 
 if __name__ == "__main__":
     """
-    This script generates a flow net for a uniform flow field using contour plots.
+    This script generates a flow net for a well using contour plots of discharge potential and stream function.
     """
 
-    # Define parameters for the contour plot
-    qx = 10.0  # Flow in x-direction
-    qy = 1.0  # Flow in y-direction
+    # Discharge of the well
+    q = 1.0 # discharge (m^2/s)
+    r = 0.1 # radius of the well (m)
+    pi = np.pi
 
     # Define the functions for discharge potential and stream function
-    phi = lambda x, y: -x*qx - y*qy  # Discharge potential
-    psi = lambda x, y: x*qy - y*qx  # Stream function
+    phi = lambda x, y: 0*x + 0*y # Placeholder for discharge potential
+    psi = lambda x, y: 0*x + 0*y # Placeholder for stream function
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
@@ -28,7 +30,7 @@ if __name__ == "__main__":
 
     # Add labels and title
     plt.legend()
-    plt.title('Flow net for uniform flow field')
+    plt.title('Flow net for a well')
     plt.xlabel('X-axis')
     plt.ylabel('Y-axis')
 
