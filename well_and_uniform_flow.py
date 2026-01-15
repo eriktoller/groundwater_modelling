@@ -4,18 +4,21 @@ import numpy as np
 
 if __name__ == "__main__":
     """
-    Create a contour plot of the flow net for a well.
+    Create a contour plot of the flow net for two wells in a uniform flow field.
     """
 
     # Discharge of the well
-    q = 1.0 # discharge (m^2/s)
+    qx = 10.0 # discharge in x-direction (m^2/s)
+    qy = 2.0 # discharge in y-direction (m^2/s)
+    q = 100.0 # discharge (m^2/s)
     r = 0.1 # radius of the well (m)
-    x0, y0 = 0.0, 0.0 # location of the well
+    x0, y0 = 0.0, 0.0 # location of the first well
+    x1, y1 = 5.0, 5.0 # location of the second well
     pi = np.pi
 
     # Define the functions for discharge potential and stream function
-    phi = lambda x, y: 0*x + 0*y # Placeholder for discharge potential
-    psi = lambda x, y: 0*x + 0*y # Placeholder for stream function
+    phi = lambda x, y: -x*qx - y*qy # Placeholder for discharge potential
+    psi = lambda x, y: x*qy - y*qx # Placeholder for stream function
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
