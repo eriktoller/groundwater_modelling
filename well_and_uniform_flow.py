@@ -1,4 +1,4 @@
-from plotting import contour_potential, contour_stream_func
+from plotting import contour_flow_net
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -28,8 +28,7 @@ if __name__ == "__main__":
     yrange = (-10, 10)
 
     # Generate contour plots
-    contour_potential(xrange, yrange, function=phi)
-    contour_stream_func(xrange, yrange, function=psi)
+    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
 
     # Add labels and title
