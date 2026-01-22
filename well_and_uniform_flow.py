@@ -8,17 +8,27 @@ if __name__ == "__main__":
     """
 
     # Discharge of the well
-    qx = 10.0 # discharge in x-direction (m^2/s)
-    qy = 2.0 # discharge in y-direction (m^2/s)
-    q = 100.0 # discharge (m^2/s)
+    pi = np.pi
+    qx = 10.0  # Flow in x-direction
+    qy = 1.0  # Flow in y-direction
+    q = -500.0 # discharge (m^2/s)
     r = 0.1 # radius of the well (m)
     x0, y0 = 0.0, 0.0 # location of the first well
     x1, y1 = 5.0, 5.0 # location of the second well
-    pi = np.pi
+    ang = np.angle(qy + 1j* qx)
+    x1, y1 = x0+r*2*np.sin(ang), y0+r*2*np.cos(ang)  # location of the second well
+
+
+    def well_phi(x, y, xw, yw, q, r):
+        """Discharge potential for a well located at (xw, yw)."""
+        zw = xw + 1j * yw
+        z = x + 1j * y
+        omega = (q/(2*pi)) * np.log((z - zw)/r)
+        return omega
 
     # Define the functions for discharge potential and stream function
-    phi = lambda x, y: -x*qx - y*qy # Placeholder for discharge potential
-    psi = lambda x, y: x*qy - y*qx # Placeholder for stream function
+    phi = lambda x, y: -x*qx - y*qy + np.real(well_phi(x, y, x0, y0, q, r) + well_phi(x, y, x1, y1, -q, r))
+    psi = lambda x, y: x*qy - y*qx  + np.imag(well_phi(x, y, x0, y0, q, r) + well_phi(x, y, x1, y1, -q, r))
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
@@ -30,6 +40,12 @@ if __name__ == "__main__":
     # Generate contour plots
     contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
+
+    # Plot the wells
+    z0 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x0 + 1j*y0)
+    z1 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x1 + 1j*y1)
+    plt.plot(z0.real, z0.imag, 'k-', linewidth=2)
+    plt.plot(z1.real, z1.imag, 'r-', linewidth=2)
 
     # Add labels and title
     plt.legend()
