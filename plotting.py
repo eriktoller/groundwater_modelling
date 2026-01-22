@@ -121,22 +121,24 @@ def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=1
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
     y = np.linspace(yrange[0], yrange[1], num_points)
-    X, Y = np.meshgrid(x, y)
+    phi = np.zeros((num_points, num_points))
+    psi = np.zeros((num_points, num_points))
 
     # Compute the result values using the provided function
-    phi = phi_func(X, Y)
-    psi = psi_func(X, Y)
+    for ii, xx in enumerate(x):
+        for jj, yy in enumerate(y):
+            phi[jj, ii] = phi_func(xx, yy)
+            psi[jj, ii] = psi_func(xx, yy)
 
     # Make the step size equal
     dphi = (np.max(phi) - np.min(phi))
-    dpsi = (np.max(psi) - np.min(psi))
     phi_step = dphi / levels
     levels_phi = np.arange(np.min(phi), np.max(phi), phi_step)
     levels_psi = np.arange(np.min(psi), np.max(psi), phi_step)
 
     # Plot the contour
-    plt.contour(X, Y, phi, colors='blue', linestyles='solid', linewidths=1, levels=levels_phi)
-    plt.contour(X, Y, psi, colors='red', linestyles='dashed', linewidths=1, levels=levels_psi)
+    plt.contour(x, y, psi, colors='blue', linestyles='solid', linewidths=1, levels=levels_phi)
+    plt.contour(x, y, phi, colors='red', linestyles='dashed', linewidths=1, levels=levels_psi)
     if labels:
         # Create an invisible red line for the legend
         plt.plot(xrange[0], yrange[0], color='red', ls='dashed', lw=1, label='Equipotential Lines')
