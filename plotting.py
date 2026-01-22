@@ -137,8 +137,8 @@ def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=1
     levels_psi = np.arange(np.min(psi), np.max(psi), phi_step)
 
     # Plot the contour
-    plt.contour(x, y, psi, colors='blue', linestyles='solid', linewidths=1, levels=levels_phi)
-    plt.contour(x, y, phi, colors='red', linestyles='dashed', linewidths=1, levels=levels_psi)
+    plt.contour(x, y, psi, colors='blue', linestyles='solid', linewidths=1, levels=levels_psi)
+    plt.contour(x, y, phi, colors='red', linestyles='dashed', linewidths=1, levels=levels_phi)
     if labels:
         # Create an invisible red line for the legend
         plt.plot(xrange[0], yrange[0], color='red', ls='dashed', lw=1, label='Equipotential Lines')

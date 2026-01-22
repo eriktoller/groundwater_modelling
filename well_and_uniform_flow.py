@@ -11,10 +11,10 @@ if __name__ == "__main__":
     pi = np.pi
     qx = 10.0  # Flow in x-direction
     qy = 1.0  # Flow in y-direction
-    q = -500.0 # discharge (m^2/s)
+    q = 500.0 # discharge (m^2/s)
     r = 0.1 # radius of the well (m)
     x0, y0 = 0.0, 0.0 # location of the first well
-    x1, y1 = 5.0, 5.0 # location of the second well
+    x1, y1 = 5.0, 5.0*0 # location of the second well
     ang = np.angle(qy + 1j* qx)
     x1, y1 = x0+r*2*np.sin(ang), y0+r*2*np.cos(ang)  # location of the second well
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     yrange = (-10, 10)
 
     # Generate contour plots
-    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
+    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 50, num_points=1000)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
 
     # Plot the wells
