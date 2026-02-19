@@ -24,6 +24,8 @@ if __name__ == "__main__":
         """Discharge potential for a well located at (xw, yw)."""
         zw = xw + 1j * yw
         z = x + 1j * y
+        if np.abs(z-zw) < r:
+            return np.nan + 1j*np.nan
         z = z**2
         zw = zw**2
         omega = (q/(2*pi)) * np.log((z - zw)/r)
@@ -46,6 +48,14 @@ if __name__ == "__main__":
     # Generate contour plots
     contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 20, num_points=500)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
+
+    # Plot the wells
+    z0 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x0 + 1j*y0)
+    z1 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x1 + 1j*y1)
+    z2 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x2 + 1j*y2)
+    z3 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x3 + 1j*y3)
+    plt.plot(z0.real, z0.imag, 'k-', linewidth=2)
+    plt.plot(z2.real, z2.imag, 'k-', linewidth=2)
 
     # Add labels and title
     plt.legend()

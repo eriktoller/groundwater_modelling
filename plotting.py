@@ -131,10 +131,10 @@ def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=1
             psi[jj, ii] = psi_func(xx, yy)
 
     # Make the step size equal
-    dphi = (np.max(phi) - np.min(phi))
+    dphi = (np.nanmax(phi) - np.nanmin(phi))
     phi_step = dphi / levels
-    levels_phi = np.arange(np.min(phi), np.max(phi), phi_step)
-    levels_psi = np.arange(np.min(psi), np.max(psi), phi_step)
+    levels_phi = np.arange(np.nanmin(phi), np.nanmax(phi), phi_step)
+    levels_psi = np.arange(np.nanmin(psi), np.nanmax(psi), phi_step)
 
     # Plot the contour
     plt.contour(x, y, psi, colors='blue', linestyles='solid', linewidths=1, levels=levels_psi)
