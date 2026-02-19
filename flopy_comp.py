@@ -29,7 +29,7 @@ if __name__ == "__main__":
         return omega
 
     # Define the functions for discharge potential and stream function
-    well = lambda x, y: well_phi(x, y, x0, y0, q, r) + well_phi(x, y, x1, y1, q, r) + well_phi(x, y, x2, y2, q, r) + well_phi(x, y, x3, y3, q, r)
+    well = lambda x, y: well_phi(x, y, x0, y0, q, r) - well_phi(x, y, x1, y1, q, r) + well_phi(x, y, x2, y2, q, r) - well_phi(x, y, x3, y3, q, r)
     phi = lambda x, y: np.real(well(x, y))  # Discharge potential
     psi = lambda x, y: np.imag(well(x, y))  # Stream function
 
