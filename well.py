@@ -1,4 +1,4 @@
-from plotting import contour_pflow_net
+from plotting import contour_flow_net
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -13,9 +13,16 @@ if __name__ == "__main__":
     x0, y0 = 0.0, 0.0 # location of the well
     pi = np.pi
 
+    def well_phi(x, y, xw, yw, q, r):
+        """Discharge potential for a well located at (xw, yw)."""
+        zw = xw + 1j * yw
+        z = x + 1j * y
+        omega = (q/(2*pi)) * np.log((z - zw)/r)
+        return omega
+
     # Define the functions for discharge potential and stream function
-    phi = lambda x, y: 0*x + 0*y # Placeholder for discharge potential
-    psi = lambda x, y: 0*x + 0*y # Placeholder for stream function
+    phi = lambda x, y: np.real(well_phi(x, y, x0, y0, q, r))  # Discharge potential
+    psi = lambda x, y: np.imag(well_phi(x, y, x0, y0, q, r))  # Stream function
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
@@ -25,7 +32,7 @@ if __name__ == "__main__":
     yrange = (-10, 10)
 
     # Generate contour plots
-    ccontour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
+    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
 
     # Add labels and title

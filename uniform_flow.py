@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     # Define the functions for discharge potential and stream function
     phi = lambda x, y: -x*qx - y*qy  # Discharge potential
-    psi = lambda x, y: x*qy - y*qx  # Stream function
+    psi = lambda x, y: -x*qy + y*qx  # Stream function
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
