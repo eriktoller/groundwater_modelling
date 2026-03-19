@@ -1,4 +1,4 @@
-from plotting import contour_flow_net
+from plotting import contour_flow_net, contour_potential
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -46,7 +46,9 @@ if __name__ == "__main__":
     yrange = (0, 10)
 
     # Generate contour plots
-    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 20, num_points=500)
+    #contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 20, num_points=500)
+    contour_potential(xrange, yrange, function=phi, levels=20,
+                     num_points=500)
     plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
 
     # Plot the wells
