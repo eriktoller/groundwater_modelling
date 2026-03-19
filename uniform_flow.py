@@ -11,8 +11,8 @@ if __name__ == "__main__":
     qy = 1.0  # Flow in y-direction
 
     # Define the functions for discharge potential and stream function
-    phi = lambda x, y: -x*qx - y*qy  # Discharge potential
-    psi = lambda x, y: -x*qy + y*qx  # Stream function
+    phi = lambda x, y: -x * qx - y * qy  # Discharge potential
+    psi = lambda x, y: -x * qy + y * qx  # Stream function
 
     # Create the figure window
     fig = plt.figure(figsize=(8, 8))
@@ -23,13 +23,15 @@ if __name__ == "__main__":
 
     # Generate contour plots
     contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi)
-    plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
+    plt.axis(
+        "equal"
+    )  # Set equal scaling for both axes (this is important for flow nets)
 
     # Add labels and title
     plt.legend()
-    plt.title('Flow net for uniform flow field')
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
+    plt.title("Flow net for uniform flow field")
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
 
     # Show the plot
     plt.tight_layout()

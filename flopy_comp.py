@@ -1,6 +1,7 @@
-from plotting import contour_flow_net
+from plotting import contour_flow_net, contour_potential
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas
 
 if __name__ == "__main__":
     """
@@ -11,30 +12,35 @@ if __name__ == "__main__":
     pi = np.pi
     qx = 10.0  # Flow in x-direction
     qy = 1.0  # Flow in y-direction
-    q0 = 10.0 # discharge (m^2/day)
-    q2 = 5.0 # discharge (m^2/day)
-    r = 0.25 # radius of the well (m)
-    x0, y0 = 1.0, 2.0 # location of the first well
-    x1, y1 = x0, -y0 # location of the second well
-    x2, y2 = 2.0, 4.0 # location of the third well
-    x3, y3 = 2.0, -4.0 # location of the fourth well
-
+    q0 = 10.0  # discharge (m^2/day)
+    q2 = 5.0  # discharge (m^2/day)
+    r = 0.25  # radius of the well (m)
+    x0, y0 = 1.0, 2.0  # location of the first well
+    x1, y1 = x0, -y0  # location of the second well
+    x2, y2 = 2.0, 4.0  # location of the third well
+    x3, y3 = 2.0, -4.0  # location of the fourth well
 
     def well_phi(x, y, xw, yw, q, r):
         """Discharge potential for a well located at (xw, yw)."""
         zw = xw + 1j * yw
         z = x + 1j * y
-        if np.abs(z-zw) < r:
-            return np.nan + 1j*np.nan
+        if np.abs(z - zw) < r:
+            return np.nan + 1j * np.nan
         z = z**2
         zw = zw**2
-        omega = (q/(2*pi)) * np.log((z - zw)/r)
+        omega = (q / (2 * pi)) * np.log((z - zw) / r)
         return omega
 
     # Define the functions for discharge potential and stream function
     phi0 = 1
-    well = lambda x, y: well_phi(x, y, x0, y0, q0, r) - well_phi(x, y, x1, y1, q0, r) + well_phi(x, y, x2, y2, q2, r) - well_phi(x, y, x3, y3, q2, r) + phi0
-    head0 = np.real(well(x0, y0+r))
+    well = (
+        lambda x, y: well_phi(x, y, x0, y0, q0, r)
+        - well_phi(x, y, x1, y1, q0, r)
+        + well_phi(x, y, x2, y2, q2, r)
+        - well_phi(x, y, x3, y3, q2, r)
+        + phi0
+    )
+    head0 = np.real(well(x0, y0 + r))
     phi = lambda x, y: np.real(well(x, y))  # Discharge potential
     psi = lambda x, y: np.imag(well(x, y))  # Stream function
 
@@ -46,21 +52,24 @@ if __name__ == "__main__":
     yrange = (0, 10)
 
     # Generate contour plots
-    contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 20, num_points=500)
-    plt.axis('equal') # Set equal scaling for both axes (this is important for flow nets)
+    # contour_flow_net(xrange, yrange, phi_func=phi, psi_func=psi, levels= 20, num_points=500)
+    contour_potential(xrange, yrange, function=phi, levels=20, num_points=500)
+    plt.axis(
+        "equal"
+    )  # Set equal scaling for both axes (this is important for flow nets)
 
     # Plot the wells
-    z0 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x0 + 1j*y0)
-    z1 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x1 + 1j*y1)
-    z2 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x2 + 1j*y2)
-    z3 = r*np.exp(1j * np.linspace(0, 2*pi, 100)) + (x3 + 1j*y3)
-    plt.plot(z0.real, z0.imag, 'k-', linewidth=2)
-    plt.plot(z2.real, z2.imag, 'k-', linewidth=2)
+    z0 = r * np.exp(1j * np.linspace(0, 2 * pi, 100)) + (x0 + 1j * y0)
+    z1 = r * np.exp(1j * np.linspace(0, 2 * pi, 100)) + (x1 + 1j * y1)
+    z2 = r * np.exp(1j * np.linspace(0, 2 * pi, 100)) + (x2 + 1j * y2)
+    z3 = r * np.exp(1j * np.linspace(0, 2 * pi, 100)) + (x3 + 1j * y3)
+    plt.plot(z0.real, z0.imag, "k-", linewidth=2)
+    plt.plot(z2.real, z2.imag, "k-", linewidth=2)
 
     # Add labels and title
     plt.legend()
-    plt.xlabel('X-axis')
-    plt.ylabel('Y-axis')
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
 
     # Show the plot
     plt.tight_layout()

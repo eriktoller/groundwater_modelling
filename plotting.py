@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def contour_potential(xrange, yrange, function, levels=10, num_points=100, labels=True):
     """
     Generates a contour plot for a given function over specified x and y ranges.
@@ -26,7 +27,9 @@ def contour_potential(xrange, yrange, function, levels=10, num_points=100, label
         Meshgrid arrays for x, y, and the computed z values.
     """
     # Validate input
-    _validate_input_contour(xrange, yrange, function, function, levels, num_points, labels)
+    _validate_input_contour(
+        xrange, yrange, function, function, levels, num_points, labels
+    )
 
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
@@ -37,15 +40,26 @@ def contour_potential(xrange, yrange, function, levels=10, num_points=100, label
     res = function(X, Y)
 
     # Plot the contour
-    plt.contour(X, Y, res, colors='red', linestyles='dashed', linewidths=1, levels=levels)
+    plt.contour(
+        X, Y, res, colors="red", linestyles="dashed", linewidths=1, levels=levels
+    )
     if labels:
         # Create an invisible red line for the legend
-        plt.plot(xrange[0], yrange[0], color='red', ls='dashed', lw=1, label='Equipotential Lines')
+        plt.plot(
+            xrange[0],
+            yrange[0],
+            color="red",
+            ls="dashed",
+            lw=1,
+            label="Equipotential Lines",
+        )
 
     return None
 
 
-def contour_stream_func(xrange, yrange, function, levels=10, num_points=100, labels=True):
+def contour_stream_func(
+    xrange, yrange, function, levels=10, num_points=100, labels=True
+):
     """
     Generates a contour plot for a given function over specified x and y ranges.
 
@@ -70,7 +84,9 @@ def contour_stream_func(xrange, yrange, function, levels=10, num_points=100, lab
         Meshgrid arrays for x, y, and the computed z values.
     """
     # Validate input
-    _validate_input_contour(xrange, yrange, function, function, levels, num_points, labels)
+    _validate_input_contour(
+        xrange, yrange, function, function, levels, num_points, labels
+    )
 
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
@@ -81,15 +97,19 @@ def contour_stream_func(xrange, yrange, function, levels=10, num_points=100, lab
     res = function(X, Y)
 
     # Plot the contour
-    plt.contour(X, Y, res, colors='blue', linestyles='solid', linewidths=1, levels=levels)
+    plt.contour(
+        X, Y, res, colors="blue", linestyles="solid", linewidths=1, levels=levels
+    )
     if labels:
         # Create an invisible red line for the legend
-        plt.plot(xrange[0], yrange[0], color='blue', lw=1, label='Streamlines')
+        plt.plot(xrange[0], yrange[0], color="blue", lw=1, label="Streamlines")
 
     return None
 
 
-def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=100, labels=True):
+def contour_flow_net(
+    xrange, yrange, phi_func, psi_func, levels=10, num_points=100, labels=True
+):
     """
     Generates a contour plot for a given function over specified x and y ranges.
 
@@ -116,7 +136,9 @@ def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=1
         Meshgrid arrays for x, y, and the computed z values.
     """
     # Validate input
-    _validate_input_contour(xrange, yrange, phi_func, psi_func, levels, num_points, labels)
+    _validate_input_contour(
+        xrange, yrange, phi_func, psi_func, levels, num_points, labels
+    )
 
     # Create a grid of x and y values
     x = np.linspace(xrange[0], xrange[1], num_points)
@@ -131,23 +153,38 @@ def contour_flow_net(xrange, yrange, phi_func, psi_func, levels=10, num_points=1
             psi[jj, ii] = psi_func(xx, yy)
 
     # Make the step size equal
-    dphi = (np.nanmax(phi) - np.nanmin(phi))
+    dphi = np.nanmax(phi) - np.nanmin(phi)
     phi_step = dphi / levels
     levels_phi = np.arange(np.nanmin(phi), np.nanmax(phi), phi_step)
     levels_psi = np.arange(np.nanmin(psi), np.nanmax(psi), phi_step)
 
     # Plot the contour
-    plt.contour(x, y, psi, colors='blue', linestyles='solid', linewidths=1, levels=levels_psi)
-    plt.contour(x, y, phi, colors='red', linestyles='dashed', linewidths=1, levels=levels_phi)
+    plt.contour(
+        x, y, psi, colors="blue", linestyles="solid", linewidths=1, levels=levels_psi
+    )
+    plt.contour(
+        x, y, phi, colors="red", linestyles="dashed", linewidths=1, levels=levels_phi
+    )
     if labels:
         # Create an invisible red line for the legend
-        plt.plot(xrange[0], yrange[0], color='red', ls='dashed', lw=1, label='Equipotential Lines')
-        plt.plot(xrange[0], yrange[0], color='blue', ls='solid', lw=1, label='Streamlines')
+        plt.plot(
+            xrange[0],
+            yrange[0],
+            color="red",
+            ls="dashed",
+            lw=1,
+            label="Equipotential Lines",
+        )
+        plt.plot(
+            xrange[0], yrange[0], color="blue", ls="solid", lw=1, label="Streamlines"
+        )
 
     return None
 
 
-def _validate_input_contour(xrange, yrange, phi_func, psi_func, levels, num_points, labels):
+def _validate_input_contour(
+    xrange, yrange, phi_func, psi_func, levels, num_points, labels
+):
     """
     Validates the input parameters for contour plotting functions.
 
@@ -195,8 +232,9 @@ def _validate_input_contour(xrange, yrange, phi_func, psi_func, levels, num_poin
     # Check that the function is callable
     for func in [phi_func, psi_func]:
         if not callable(func):
-            raise ValueError("function  must be a callable that takes two arguments (x, y).")
-        
+            raise ValueError(
+                "function  must be a callable that takes two arguments (x, y)."
+            )
 
         # Check that the function can be called with two arguments
         try:
@@ -204,10 +242,13 @@ def _validate_input_contour(xrange, yrange, phi_func, psi_func, levels, num_poin
             test_y = np.array([[0]])
             func(test_x, test_y)
         except Exception as e:
-            raise ValueError("function must be callable with two arguments (x, y).") from e
+            raise ValueError(
+                "function must be callable with two arguments (x, y)."
+            ) from e
 
     assert xrange[0] < xrange[1], "Invalid xrange: xmin must be less than xmax."
     assert yrange[0] < yrange[1], "Invalid yrange: ymin must be less than ymax."
+
 
 def new_func(levels, dpsi):
     psi_step = dpsi / levels
