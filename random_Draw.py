@@ -17,11 +17,10 @@ values = [count / num * 100 for count in counts.values()]
 
 # draw the final order
 ind_rand = random.choice(results)
-print('\nRandomly selected order:')
+print("\nRandomly selected order:")
 for i in range(len(ind_rand)):
-    print(f"{i+1}: {ind_rand[i]}")
+    print(f"{i + 1}: {ind_rand[i]}")
 
-print('\nDistribution of orders:')
+print("\nDistribution of orders:")
 for label, value in zip(labels, values):
     print(f"{label}: {value:.2f}%")
-
